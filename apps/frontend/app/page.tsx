@@ -2,19 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  category: string;
-}
+import { Product, CartItem } from '@repo/shared-types';
+import { formatPrice, calculateCartTotal } from '@repo/shared-utils';
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [cart, setCart] = useState<{ product: Product; quantity: number }[]>([]);
+  const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -128,7 +121,7 @@ export default function Home() {
   };
 
   const getTotalPrice = () => {
-    return cart.reduce((total, item) => total + item.product.price * item.quantity, 0);
+    return calculateCartTotal(cart);
   };
 
   const filteredProducts = selectedCategory === 'all'
@@ -250,7 +243,7 @@ export default function Home() {
                   <div className="flex justify-between items-center">
                     <div>
                       <span className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent">
-                        ${product.price.toFixed(2)}
+                        {formatPrice(product.price)}
                       </span>
                     </div>
                     <button

@@ -1,14 +1,5 @@
 import { Injectable } from '@nestjs/common';
-
-export interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  category: string;
-  stock: number;
-}
+import { Product } from '@repo/shared-types';
 
 @Injectable()
 export class ProductsService {
